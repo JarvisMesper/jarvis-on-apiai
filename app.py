@@ -89,10 +89,23 @@ def makeWebhookResult(data):
         "displayText": speech,
         "data": {"facebook": {
                     "attachment": {
-                        "type": "audio",
-                        "payload": {
-                            "url": "https://example.com/audio/test.mp3"
-                        }
+                        "type": "template",
+                        "payload":{
+                        "template_type":"button",
+                        "text":"What do you want to do next?",
+                        "buttons":[
+                          {
+                            "type":"web_url",
+                            "url":"https://petersapparel.parseapp.com",
+                            "title":"Show Website"
+                          },
+                          {
+                            "type":"postback",
+                            "title":"Start Chatting",
+                            "payload":"USER_DEFINED_PAYLOAD"
+                          }
+                        ]
+                      }
                     }
                  }
         },
