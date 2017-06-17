@@ -89,7 +89,15 @@ def makeWebhookResult(data):
         "displayText": speech,
         # "data": data,
         # "contextOut": [],
-        "source": "apiai-weather-webhook-sample"
+        "source": "apiai-weather-webhook-sample",
+        "facebook": {
+            "attachment": {
+              "type": "audio",
+              "payload": {
+                "url": "https://example.com/audio/test.mp3"
+              }
+            }
+          }
     }
 
 
