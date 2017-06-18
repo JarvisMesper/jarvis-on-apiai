@@ -36,7 +36,7 @@ def webhook():
 def processRequest(req):
     data = None
     if req.get("result").get("action") == "weatherForecast":
-        data = openfood.get_forecast(req)
+        data = forecast.get_forecast(req)
     if req.get("result").get("action") == "openfoodInfo":
         #res = makeWebhookResult(data)
         print("nothing yet")
@@ -114,6 +114,8 @@ def makeWebhookResult(data):
 
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))
+
+    print(forecast.testPrint("bitch"))
 
     print("Starting app on port %d" % port)
 
