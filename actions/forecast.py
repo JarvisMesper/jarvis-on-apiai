@@ -1,4 +1,4 @@
-def get_forecast(request):
+def get_forecast(req):
     baseurl = "https://query.yahooapis.com/v1/public/yql?"
     yql_query = makeYqlQuery(req)
     if yql_query is None:
