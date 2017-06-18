@@ -50,9 +50,12 @@ def makeForecastWebhookResult(req):
     if channel is None:
         return {}
 
-    link = channel.get('link').split("*")[1]
-    print("Link:")
-    print(link)
+    linktemp = channel.get('link')
+    link = None
+    if linktemp is not None:
+        linktemp = linktemp.split("*")
+        if len(linktemp) > 1:
+            link = linktemp[1]
 
     item = channel.get('item')
     location = channel.get('location')
@@ -91,7 +94,7 @@ def makeForecastWebhookResult(req):
                         "buttons":[
                           {
                             "type":"web_url",
-                            "url":"https://petersapparel.parseapp.com",
+                            "url":link,
                             "title":"See on Yahoo Weather forecast"
                           }
                         ]

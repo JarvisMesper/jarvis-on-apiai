@@ -48,6 +48,16 @@ def processRequest(req):
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))
 
+    linktemp = "asldjflsdj*ldsflsa"
+    link = None
+    if linktemp is not None:
+        linktemp = linktemp.split("*")
+        if len(linktemp) > 1:
+            link = linktemp[1]
+            
+    print("Link:")
+    print(link)
+
     print("Starting app on port %d" % port)
 
     app.run(debug=False, port=port, host='0.0.0.0')
