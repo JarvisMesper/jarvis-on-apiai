@@ -20,8 +20,6 @@ def get_forecast(req):
     print ("Result:")
     print(result)
     data = json.loads(result)
-    print ("Data:")
-    print(data)
 
     return data
 
@@ -51,6 +49,10 @@ def makeForecastWebhookResult(req):
     channel = result.get('channel')
     if channel is None:
         return {}
+
+    link = channel.get('link').split("*")[1]
+    print("Link:")
+    print(link)
 
     item = channel.get('item')
     location = channel.get('location')
@@ -91,11 +93,6 @@ def makeForecastWebhookResult(req):
                             "type":"web_url",
                             "url":"https://petersapparel.parseapp.com",
                             "title":"See on Yahoo Weather forecast"
-                          },
-                          {
-                            "type":"postback",
-                            "title":"Go fuck yourself",
-                            "payload":"USER_DEFINED_PAYLOAD"
                           }
                         ]
                       }
