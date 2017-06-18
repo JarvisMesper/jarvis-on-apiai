@@ -34,89 +34,15 @@ def webhook():
 
 
 def processRequest(req):
-    data = None
+    res = None
     if req.get("result").get("action") == "weatherForecast":
-        data = forecast.get_forecast(req)
+        res = forecast.makeForecastWebhookResult(req)
     if req.get("result").get("action") == "openfoodInfo":
         #res = makeWebhookResult(data)
         print("nothing yet")
 
-    res = None
-    if(data != None):
-        print("There is data")
-        res = makeWebhookResult(data)
 
     return res
-
-
-
-def makeWebhookResult(data):
-    query = data.get('query')
-    if query is None:
-        return {}
-
-    result = query.get('results')
-    if result is None:
-        return {}
-
-    channel = result.get('channel')
-    if channel is None:
-        return {}
-
-    item = channel.get('item')
-    location = channel.get('location')
-    units = channel.get('units')
-    if (location is None) or (item is None) or (units is None):
-        return {}
-
-    condition = item.get('condition')
-    if condition is None:
-        return {}
-
-    # print(json.dumps(item, indent=4))
-    tempF = int(condition.get('temp'))
-    print ("Temperature in Farenheit: ")
-    print (tempF)
-
-    tempC = int((tempF - 32) * (5.0 / 9.0) + 0.5)
-    print ("Temp in Celsius: ")
-    print (tempC)
-
-    speech = "Today in " + location.get('city') + ": " + condition.get('text') + \
-             ", the temperature is " + str(tempC) + " " + "°C"
-
-    print("Response:")
-    print(speech)
-
-    return {
-        "speech": speech,
-        "displayText": speech,
-        "data": {"facebook": {
-                    "attachment": {
-                        "type": "template",
-                        "payload":{
-                        "template_type":"button",
-                        "text":speech,
-                        "buttons":[
-                          {
-                            "type":"web_url",
-                            "url":"https://petersapparel.parseapp.com",
-                            "title":"See on Yahoo Weather forecast"
-                          },
-                          {
-                            "type":"postback",
-                            "title":"Go fuck yourself",
-                            "payload":"USER_DEFINED_PAYLOAD"
-                          }
-                        ]
-                      }
-                    }
-                 }
-        },
-        # "contextOut": [],
-        "source": "apiai-weather-webhook-sample",
-        
-    }
 
 
 if __name__ == '__main__':

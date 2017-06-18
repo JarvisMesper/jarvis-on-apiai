@@ -33,3 +33,76 @@ def makeYqlQuery(req):
         return None
 
     return "select * from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + city + "')"
+
+
+def makeForecastWebhookResult(req):
+    data = get_forecast(req)
+    if data is None:
+        return {}
+
+    query = data.get('query')
+    if query is None:
+        return {}
+
+    result = query.get('results')
+    if result is None:
+        return {}
+
+    channel = result.get('channel')
+    if channel is None:
+        return {}
+
+    item = channel.get('item')
+    location = channel.get('location')
+    units = channel.get('units')
+    if (location is None) or (item is None) or (units is None):
+        return {}
+
+    condition = item.get('condition')
+    if condition is None:
+        return {}
+
+    # print(json.dumps(item, indent=4))
+    tempF = int(condition.get('temp'))
+    print ("Temperature in Farenheit: ")
+    print (tempF)
+
+    tempC = int((tempF - 32) * (5.0 / 9.0) + 0.5)
+    print ("Temp in Celsius: ")
+    print (tempC)
+
+    speech = "Today in " + location.get('city') + ": " + condition.get('text') + \
+             ", the temperature is " + str(tempC) + " " + "°C"
+
+    print("Response:")
+    print(speech)
+
+    return {
+        "speech": speech,
+        "displayText": speech,
+        "data": {"facebook": {
+                    "attachment": {
+                        "type": "template",
+                        "payload":{
+                        "template_type":"button",
+                        "text":speech,
+                        "buttons":[
+                          {
+                            "type":"web_url",
+                            "url":"https://petersapparel.parseapp.com",
+                            "title":"See on Yahoo Weather forecast"
+                          },
+                          {
+                            "type":"postback",
+                            "title":"Go fuck yourself",
+                            "payload":"USER_DEFINED_PAYLOAD"
+                          }
+                        ]
+                      }
+                    }
+                 }
+        },
+        # "contextOut": [],
+        "source": "apiai-weather-webhook-sample",
+        
+    }
