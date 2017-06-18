@@ -36,7 +36,7 @@ def webhook():
 def processRequest(req):
     data = None
     if req.get("result").get("action") == "weatherForecast":
-        data = get_forecast(req)
+        data = openfood.get_forecast(req)
     if req.get("result").get("action") == "openfoodInfo":
         #res = makeWebhookResult(data)
         print("nothing yet")
