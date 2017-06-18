@@ -41,11 +41,11 @@ def processRequest(req):
         #res = makeWebhookResult(data)
         print("nothing yet")
 
-    print("Data:")
-    print(data)
-    res = makeWebhookResult(data)
-    print("Res:")
-    print(res)
+    res = None
+    if(data != None):
+        print("There is data")
+        res = makeWebhookResult(data)
+
     return res
 
 
@@ -114,8 +114,6 @@ def makeWebhookResult(data):
 
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))
-
-    print(forecast.testPrint("bitch"))
 
     print("Starting app on port %d" % port)
 

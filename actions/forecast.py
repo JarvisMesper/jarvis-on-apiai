@@ -24,7 +24,3 @@ def makeYqlQuery(req):
         return None
 
     return "select * from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + city + "')"
-
-def testPrint(text):
-    print (text)
-    return "lol"
