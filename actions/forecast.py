@@ -2,6 +2,8 @@ from urllib.parse import urlparse, urlencode
 from urllib.request import urlopen, Request
 from urllib.error import HTTPError
 
+import json
+
 def get_forecast(req):
     print ("Asking weather forecast to Yahoo")
     baseurl = "https://query.yahooapis.com/v1/public/yql?"
