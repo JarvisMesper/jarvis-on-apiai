@@ -22,7 +22,6 @@ def getOpenFoodInfo(req):
     return data
     
 
-
 def makeProductInfoWebhookResult(req):
     data = getOpenFoodInfo(req)
     if data is None:

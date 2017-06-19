@@ -104,5 +104,4 @@ def makeForecastWebhookResult(req):
         },
         # "contextOut": [],
         "source": "apiai-weather-webhook-sample",
-        
     }
