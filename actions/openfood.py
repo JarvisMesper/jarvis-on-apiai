@@ -3,7 +3,7 @@ from actions.RequestOpenFood import ProductBuilder
 
 
 def getOpenFoodInfo(req):
-    print (req)
+    #print (req)
     
     result = req.get("result")
     parameters = result.get("parameters")
@@ -63,12 +63,32 @@ def makeProductInfoWebhookResult(req):
         print("Image URL:")
         print(image_url)
 
-    return {
+    json_response = {
         "speech": speech,
         "displayText": speech,
         "data": {
             "facebook": {
-                "attachment": {
+                "attachment":{
+                    "type":"image",
+                    "payload":{
+                        "url":image_url
+                    }
+                }
+            }
+        },
+        # "contextOut": [],
+        "source": "apiai-weather-webhook-sample",
+    }
+    if json_response is None:
+        print("problem")
+
+    return json_response
+
+
+
+    '''
+
+"attachment": {
                     "type":"template",
                     "payload":{
                         "template_type":"generic",
@@ -87,9 +107,5 @@ def makeProductInfoWebhookResult(req):
                         ]
                     }
                 }
-            }
-        },
-        # "contextOut": [],
-        "source": "apiai-weather-webhook-sample",
-        
-    }
+
+    '''
