@@ -89,16 +89,16 @@ def makeForecastWebhookResult(req):
                     "attachment": {
                         "type": "template",
                         "payload":{
-                        "template_type":"button",
-                        "text":speech,
-                        "buttons":[
-                          {
-                            "type":"web_url",
-                            "url":link,
-                            "title":"See on Yahoo Weather forecast"
-                          }
-                        ]
-                      }
+                            "template_type":"button",
+                            "text":speech,
+                            "buttons":[
+                            {
+                                "type":"web_url",
+                                "url":link,
+                                "title":"See on Yahoo Weather forecast"
+                            }
+                            ]
+                        }
                     }
                  }
         },

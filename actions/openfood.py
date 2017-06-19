@@ -85,7 +85,14 @@ def makeProductInfoWebhookResult(req):
                             "messenger_extensions":True,
                             "webview_height_ratio":"tall",
                             "fallback_url":"https://openfood.ch"
-                         }
+                         },
+                         "buttons":[  
+                            {  
+                               "type":"web_url",
+                               "url":"https://openfood.ch",
+                               "title":"View Website"
+                            }
+                         ]
                       }
                    ]
                 }
