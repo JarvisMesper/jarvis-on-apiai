@@ -16,7 +16,7 @@ def get_forecast(req):
     yql_url = baseurl + urlencode({'q': yql_query}) + "&format=json"
     print ("YQL Url:")
     print (yql_url)
-    result = urlopen(yql_url).read()
+    result = urlopen(yql_url).read().decode('utf-8')
     print ("Result:")
     print(result)
     data = json.loads(result)

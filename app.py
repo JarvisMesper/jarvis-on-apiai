@@ -37,9 +37,8 @@ def processRequest(req):
     res = None
     if req.get("result").get("action") == "weatherForecast":
         res = forecast.makeForecastWebhookResult(req)
-    if req.get("result").get("action") == "openfoodInfo":
-        #res = makeWebhookResult(data)
-        print("nothing yet")
+    if req.get("result").get("action") == "productInfo":
+        res = openfood.makeProductInfoWebhookResult(req)
 
 
     return res
@@ -48,15 +47,7 @@ def processRequest(req):
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))
 
-    linktemp = "asldjflsdj*ldsflsa"
-    link = None
-    if linktemp is not None:
-        linktemp = linktemp.split("*")
-        if len(linktemp) > 1:
-            link = linktemp[1]
-            
-    print("Link:")
-    print(link)
+
 
     print("Starting app on port %d" % port)
 

@@ -44,6 +44,10 @@ Install dependencies
 
 	pip install -r requirements.txt
 
+Export environment variables
+
+	export $(cat .env)
+
 Now you can run the webhook with `python app.py`. When you want to exit the virtualenv, just type:
 
     deactivate

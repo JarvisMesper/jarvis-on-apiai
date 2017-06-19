@@ -107,7 +107,7 @@ class RequestOpenFood:
         r = requests.post(RequestOpenFood.URL_SEARCH, json=query, headers=RequestOpenFood.HEADERS)
         res = RequestOpenFood.check_data(r)
         
-        return res
+        return res[0]
     
     @staticmethod
     def get_nutrient(name):
