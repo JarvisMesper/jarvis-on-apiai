@@ -3,11 +3,11 @@ from actions.RequestOpenFood import ProductBuilder
 
 
 def getOpenFoodInfo(req):
-    #print (req)
+    print (req)
     
     result = req.get("result")
     parameters = result.get("parameters")
-    barcode = parameters.get("productBarCode")
+    barcode = parameters.get("barcode")
 
     data = {}
 
@@ -17,7 +17,7 @@ def getOpenFoodInfo(req):
             #res = ProductBuilder.clean_data(res)
             data["info"] = res
         except:
-            data["info"] = "Can't find this product on the OpenFood database"
+            data["info"] = {"source": None}
 
     return data
     
@@ -31,6 +31,13 @@ def makeProductInfoWebhookResult(req):
         return {}
 
     info = data.get("info").get("_source")
+
+    if info is None:
+      return {  
+       "speech":"Can't find info about this product",
+       "displayText":"Can't find info about this product",
+       "source":"apiai-weather-webhook-sample"
+    }
 
 
     speech = info.get("name_en")
