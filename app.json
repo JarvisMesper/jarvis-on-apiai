@@ -1,7 +1,7 @@
 {
-  "name": "API.AI webhook demonstration",
-  "description": "API.AI webhook demonstration",
-  "repository": "https://github.com/api-ai/apiai-weather-webhook-sample",
+  "name": "Jarvis the nutritionist API.AI webhook",
+  "description": "webhook linked to an API.AI agent that run Jarvis the nutritionist chatbot",
+  "repository": "https://github.com/JarvisMesper/jarvis-on-apiai",
   "logo": "http://xvir.github.io/img/apiai.png",
   "keywords": ["api.ai", "natural language"]
 }
