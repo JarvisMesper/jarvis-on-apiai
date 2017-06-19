@@ -77,22 +77,7 @@ def makeProductInfoWebhookResult(req):
                    "elements":[  
                       {  
                          "title":speech,
-                         "image_url":image_url,
-                         "subtitle":"From OpenFood.ch",
-                         "default_action":{  
-                            "type":"web_url",
-                            "url":"https://openfood.ch",
-                            "messenger_extensions":True,
-                            "webview_height_ratio":"tall",
-                            "fallback_url":"https://openfood.ch"
-                         },
-                         "buttons":[  
-                            {  
-                               "type":"web_url",
-                               "url":"https://openfood.ch",
-                               "title":"View Website"
-                            }
-                         ]
+                         "image_url":image_url
                       }
                    ]
                 }
