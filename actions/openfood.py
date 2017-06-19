@@ -52,9 +52,7 @@ def makeProductInfoWebhookResult(req):
     if images is not None:
         images_data = images.get("data")
         if images_data is not None:
-            images_thumb = images_data.get("thumb")
-            if images_thumb is not None:
-                image_url = images_thumb.get("url")
+            image_url = images_data.get("url")
 
     if image_url is None:
         print("Can't find image url")
@@ -62,6 +60,49 @@ def makeProductInfoWebhookResult(req):
     else:
         print("Image URL:")
         print(image_url)
+
+    test = {
+
+    }
+
+    json_response = {  
+       "speech":speech,
+       "displayText":speech,
+       "data":{  
+          "facebook":{  
+             "attachment":{  
+                "type":"template",
+                "payload":{  
+                   "template_type":"generic",
+                   "elements":[  
+                      {  
+                         "title":speech,
+                         "image_url":image_url,
+                         "subtitle":"From OpenFood.ch",
+                         "default_action":{  
+                            "type":"web_url",
+                            "url":"https://openfood.ch",
+                            "messenger_extensions":True,
+                            "webview_height_ratio":"tall",
+                            "fallback_url":"https://openfood.ch"
+                         }
+                      }
+                   ]
+                }
+             }
+          }
+       },
+       "source":"apiai-weather-webhook-sample"
+    }
+
+    if json_response is None:
+        print("problem")
+
+    return json_response
+
+
+
+    '''
 
     json_response = {
         "speech": speech,
@@ -79,33 +120,5 @@ def makeProductInfoWebhookResult(req):
         # "contextOut": [],
         "source": "apiai-weather-webhook-sample",
     }
-    if json_response is None:
-        print("problem")
-
-    return json_response
-
-
-
-    '''
-
-"attachment": {
-                    "type":"template",
-                    "payload":{
-                        "template_type":"generic",
-                        "elements":[
-                           {
-                            "title":speech,
-                            "image_url":image_url,
-                            "subtitle":"From OpenFood.ch",
-                            "default_action": {
-                              "type": "web_url",
-                              "url": "https://openfood.ch",
-                              "messenger_extensions": true,
-                              "webview_height_ratio": "tall"
-                            }     
-                          }
-                        ]
-                    }
-                }
 
     '''
