@@ -19,10 +19,13 @@ app = Flask(__name__)
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
+
+
     req = request.get_json(silent=True, force=True)
 
-    #print("Request:")
-    #print(json.dumps(req, indent=4))
+    print("Request:")
+    print(json.dumps(req, indent=4))
+
 
     res = processRequest(req)
 
@@ -33,11 +36,31 @@ def webhook():
     return r
 
 
+@app.route('/webhook', methods=['GET'])
+def webhook_challenge():
+    """
+    A webhook to return a challenge
+    """
+    verify_token = request.args.get('hub.verify_token')
+    print(verify_token)
+    print("Verified token")
+
+    # check whether the verify tokens match
+    if verify_token == "api_token":
+        # respond with the challenge to confirm
+        challenge = request.args.get('hub.challenge')
+        return challenge
+    else:
+        return 'Invalid Request or Verification Token'
+
 def processRequest(req):
+    print("processing Request")
     res = None
     if req.get("result").get("action") == "weatherForecast":
+        print("process weather request")
         res = forecast.makeForecastWebhookResult(req)
     if req.get("result").get("action") == "productInfo":
+        print("process openfood request")
         res = openfood.makeProductInfoWebhookResult(req)
 
 

@@ -42,11 +42,8 @@ def makeProductInfoWebhookResult(req):
     if speech is None:
         speech = info.get("name_it")
 
-
     print("Response:")
     print(speech)
-
-
 
     images = info.get("images")[0]
     if images is not None:
@@ -61,10 +58,6 @@ def makeProductInfoWebhookResult(req):
         print("Image URL:")
         print(image_url)
 
-    test = {
-
-    }
-
     json_response = {  
        "speech":speech,
        "displayText":speech,
@@ -77,7 +70,8 @@ def makeProductInfoWebhookResult(req):
                    "elements":[  
                       {  
                          "title":speech,
-                         "image_url":image_url
+                         "image_url":image_url,
+                         "subtitle":"Provided by OpenFood.ch"
                       }
                    ]
                 }
