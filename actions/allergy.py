@@ -1,3 +1,4 @@
+from utils import utils
 
 def getAllergyInfo(req):
     result = req.get('result')
@@ -20,8 +21,17 @@ def setAllergiesIntent(req):
     if data is None:
         return {}
 
-    # TODO : save allergies related to sessionId somewhere
+    # save allergies to a file
+    allergies = utils.open_json_file('data/', 'allergies.json')
+    if data['sessionId'] in allergies['data']:
+        my_allergies = allergies['data'][data['sessionId']]
+    for allergen in data['allergens']:
+        if allergen not in my_allergies:
+            my_allergies.append(allergen)
+    allergies['data'][data['sessionId']] = my_allergies
+    utils.save_json_file('data/', 'allergies.json', allergies)
 
+    # generate answer
     speech = 'So you\'re allergic to: '
     for allergen in data['allergens']:
         speech += allergen + ', '
@@ -45,8 +55,16 @@ def getAllergiesIntent(req):
     if data is None:
         return {}
 
-    # TODO : get allergies related to sessionId
-    speech = 'You\'re allergic to: tomato, garlic and pasta. Sorry mate.'
+    allergies = utils.open_json_file('data/', 'allergies.json')
+    if data['sessionId'] in allergies['data']:
+
+        speech = 'From what I know, you\'re allergic to: '
+        for allergen in allergies['data'][data['sessionId']]:
+            speech += allergen + ', '
+        speech = speech[:-2]
+
+    else:
+        speech = 'I am not aware that you are allergic to anything.'
 
     json_response = {  
        "speech": speech,
