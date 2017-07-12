@@ -17,6 +17,15 @@ from actions import place
 app = Flask(__name__)
 
 
+@app.route('/', methods=['GET'])
+def index():
+    content = '<h1>Jarv webhook</h1>'
+    content += '<p>Hey, if you\'re searching for Jarvis, you\'re in the right place.</p>'
+    content += '<p>It\'s almost here.</p>'
+    content += 'The webhook is ---> <a href="/webhook">HERE</a>'
+    return content
+
+
 @app.route('/webhook', methods=['POST'])
 def webhook():
     req = request.get_json(silent=True, force=True)
