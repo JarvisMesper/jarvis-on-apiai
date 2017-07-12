@@ -2,11 +2,11 @@ import requests
 import os
 
 def getStoreInfo(req):
-    result = req.get("result")
-    parameters = result.get("parameters")
+    result = req.get('result')
+    parameters = result.get('parameters')
 
-    store = parameters.get("storeName")
-    city = parameters.get("geo-city")
+    store = parameters.get('storeName')
+    city = parameters.get('geo-city')
 
     data = {}
 

@@ -36,7 +36,7 @@ def makeProductInfoWebhookResult(req):
       return {  
        "speech":"Can't find info about this product",
        "displayText":"Can't find info about this product",
-       "source":"apiai-weather-webhook-sample"
+       "source":"jarvis-on-apiai"
     }
 
 
@@ -84,7 +84,7 @@ def makeProductInfoWebhookResult(req):
              }
           }
        },
-       "source":"apiai-weather-webhook-sample"
+       "source":"jarvis-on-apiai"
     }
 
     if json_response is None:

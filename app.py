@@ -12,6 +12,7 @@ from flask import make_response
 from actions import openfood
 from actions import forecast
 from actions import place
+from actions import allergy
 
 # Flask app should start in global layout
 app = Flask(__name__)
@@ -71,6 +72,12 @@ def processRequest(req):
     if req.get("result").get("action") == "storeLocation":
         print("process place request")
         res = place.makeStoreLocationWebhookResult(req)
+    if req.get("result").get("action") == "setAllergies":
+        print("process setAllergies request")
+        res = allergy.setAllergiesIntent(req)
+    if req.get("result").get("action") == "getAllergies":
+        print("process getAllergies request")
+        res = allergy.getAllergiesIntent(req)
 
     print('========== RES ==========')
     print(res)
