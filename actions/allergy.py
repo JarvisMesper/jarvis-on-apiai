@@ -1,4 +1,7 @@
 from utils import utils
+from actions.DBClient import DBClient
+
+saveToMongo = True  # If False, it's saved to a file
 
 def getAllergyInfo(req):
     result = req.get('result')
@@ -21,15 +24,39 @@ def setAllergiesIntent(req):
     if data is None:
         return {}
 
-    # save allergies to a file
-    allergies = utils.open_json_file('data/', 'allergies.json')
-    if data['sessionId'] in allergies['data']:
-        my_allergies = allergies['data'][data['sessionId']]
-    for allergen in data['allergens']:
-        if allergen not in my_allergies:
-            my_allergies.append(allergen)
-    allergies['data'][data['sessionId']] = my_allergies
-    utils.save_json_file('data/', 'allergies.json', allergies)
+    if saveToMongo:
+        # save allergies to mongodb
+        db = DBClient.get_db()
+        session = db.sessions.find_one({'sessionId': data['sessionId']})
+
+        if session and 'allergies' in session:
+            # this user already has allergies
+            my_allergies = session['allergies']
+        else:
+            # no previous allergies
+            my_allergies = []
+
+        for allergen in data['allergens']:
+            if allergen not in my_allergies:
+                my_allergies.append(allergen)
+
+        if session and 'sessionId' in session:
+            # update user data
+            db.sessions.update({'sessionId': data['sessionId']},{'$set': {'allergies': my_allergies}})
+        else:
+            # new entry in db
+            new_session = { 'sessionId': data['sessionId'], 'allergies': my_allergies }
+            db.sessions.insert(new_session)
+    else:
+        # save allergies to a file
+        allergies = utils.open_json_file('data/', 'allergies.json')
+        if data['sessionId'] in allergies['data']:
+            my_allergies = allergies['data'][data['sessionId']]
+        for allergen in data['allergens']:
+            if allergen not in my_allergies:
+                my_allergies.append(allergen)
+        allergies['data'][data['sessionId']] = my_allergies
+        utils.save_json_file('data/', 'allergies.json', allergies)
 
     # generate answer
     speech = 'So you\'re allergic to: '
@@ -55,16 +82,21 @@ def getAllergiesIntent(req):
     if data is None:
         return {}
 
-    allergies = utils.open_json_file('data/', 'allergies.json')
-    if data['sessionId'] in allergies['data']:
-
-        speech = 'From what I know, you\'re allergic to: '
-        for allergen in allergies['data'][data['sessionId']]:
-            speech += allergen + ', '
-        speech = speech[:-2]
-
+    if saveToMongo:
+        speech = 'UNDER CONSTRUCTION'
+        # TODO : retrieve from mongodb
+        # TODO : put mongodb host in environment variable and use mlab.com
     else:
-        speech = 'I am not aware that you are allergic to anything.'
+        allergies = utils.open_json_file('data/', 'allergies.json')
+        if data['sessionId'] in allergies['data']:
+
+            speech = 'From what I know, you\'re allergic to: '
+            for allergen in allergies['data'][data['sessionId']]:
+                speech += allergen + ', '
+            speech = speech[:-2]
+
+        else:
+            speech = 'I am not aware that you are allergic to anything.'
 
     json_response = {  
        "speech": speech,
