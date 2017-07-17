@@ -83,13 +83,19 @@ def getAllergiesIntent(req):
         return {}
 
     if saveToMongo:
-        speech = 'UNDER CONSTRUCTION'
-        # TODO : retrieve from mongodb
-        # TODO : put mongodb host in environment variable and use mlab.com
+        db = DBClient.get_db()
+        session = db.sessions.find_one({'sessionId': data['sessionId']}, {'_id':0,'allergies':1})
+
+        if session and 'allergies' in session:
+            speech = 'From what I know, you\'re allergic to: '
+            for allergen in session['allergies']:
+                speech += allergen + ', '
+            speech = speech[:-2]
+        else:
+            speech = 'I am not aware that you are allergic to anything.'
     else:
         allergies = utils.open_json_file('data/', 'allergies.json')
         if data['sessionId'] in allergies['data']:
-
             speech = 'From what I know, you\'re allergic to: '
             for allergen in allergies['data'][data['sessionId']]:
                 speech += allergen + ', '
@@ -108,4 +114,3 @@ def getAllergiesIntent(req):
         print("problem")
 
     return json_response
-
