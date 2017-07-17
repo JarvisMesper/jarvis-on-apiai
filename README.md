@@ -68,7 +68,7 @@ Install dependencies
 
 	pip install -r requirements.txt
 
-Export environment variables
+Copy `.env.dist` to `.env` and fill in the variables with real values. Then export the environment variables
 
 	export $(cat .env)
 
