@@ -1,10 +1,12 @@
-from pymongo import MongoClient
 import os
+
+from pymongo import MongoClient
+
 
 class DBClient:
 
     def get_db():
-        MONGODB_HOST=os.environ.get('MONGODB_HOST')
-        client = MongoClient(MONGODB_HOST)
+        mongodb_host = os.environ.get('MONGODB_HOST')
+        client = MongoClient(mongodb_host)
         db = client.jarvis
         return db

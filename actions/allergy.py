@@ -1,9 +1,11 @@
-from utils import utils
 from actions.DBClient import DBClient
+
+from utils import utils
 
 saveToMongo = True  # If False, it's saved to a file
 
-def getAllergyInfo(req):
+
+def get_allergy_info(req):
     result = req.get('result')
 
     parameters = result.get('parameters')
@@ -17,10 +19,11 @@ def getAllergyInfo(req):
         data['allergens'] = allergens
 
     return data
-    
-def setAllergiesIntent(req):
-    data = getAllergyInfo(req)
-    
+
+
+def set_allergies_intent(req):
+    data = get_allergy_info(req)
+
     if data is None:
         return {}
 
@@ -42,10 +45,12 @@ def setAllergiesIntent(req):
 
         if session and 'sessionId' in session:
             # update user data
-            db.sessions.update({'sessionId': data['sessionId']},{'$set': {'allergies': my_allergies}})
+            db.sessions.update({'sessionId': data['sessionId']},
+                               {'$set': {'allergies': my_allergies}})
         else:
             # new entry in db
-            new_session = { 'sessionId': data['sessionId'], 'allergies': my_allergies }
+            new_session = {'sessionId': data['sessionId'],
+                           'allergies': my_allergies}
             db.sessions.insert(new_session)
     else:
         # save allergies to a file
@@ -64,10 +69,10 @@ def setAllergiesIntent(req):
         speech += allergen + ', '
     speech = speech[:-2]
 
-    json_response = {  
-       "speech": speech,
-       "displayText": speech,
-       "source":"jarvis-on-apiai"
+    json_response = {
+        "speech": speech,
+        "displayText": speech,
+        "source": "jarvis-on-apiai"
     }
 
     if json_response is None:
@@ -75,16 +80,18 @@ def setAllergiesIntent(req):
 
     return json_response
 
-def getAllergiesIntent(req):
+
+def get_allergies_intent(req):
     data = {}
     data['sessionId'] = req['sessionId']
-    
+
     if data is None:
         return {}
 
     if saveToMongo:
         db = DBClient.get_db()
-        session = db.sessions.find_one({'sessionId': data['sessionId']}, {'_id':0,'allergies':1})
+        session = db.sessions.find_one({'sessionId': data['sessionId']},
+                                       {'_id': 0, 'allergies': 1})
 
         if session and 'allergies' in session:
             speech = 'From what I know, you\'re allergic to: '
@@ -104,10 +111,10 @@ def getAllergiesIntent(req):
         else:
             speech = 'I am not aware that you are allergic to anything.'
 
-    json_response = {  
-       "speech": speech,
-       "displayText": speech,
-       "source":"jarvis-on-apiai"
+    json_response = {
+        "speech": speech,
+        "displayText": speech,
+        "source": "jarvis-on-apiai"
     }
 
     if json_response is None:

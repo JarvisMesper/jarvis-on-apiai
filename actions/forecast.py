@@ -1,39 +1,40 @@
-from urllib.parse import urlparse, urlencode
-from urllib.request import urlopen, Request
-from urllib.error import HTTPError
-
 import json
+from urllib.parse import urlencode
+from urllib.request import urlopen
+
 
 def get_forecast(req):
-    print ("Asking weather forecast to Yahoo")
+    print("Asking weather forecast to Yahoo")
     baseurl = "https://query.yahooapis.com/v1/public/yql?"
-    yql_query = makeYqlQuery(req)
+    yql_query = make_yql_query(req)
     if yql_query is None:
-        print ("Problem, can't creat YQL Query")
+        print("Problem, can't creat YQL Query")
         return {}
-    print ("YQL Query:")
-    print (yql_query)
+    print("YQL Query:")
+    print(yql_query)
     yql_url = baseurl + urlencode({'q': yql_query}) + "&format=json"
-    print ("YQL Url:")
-    print (yql_url)
+    print("YQL Url:")
+    print(yql_url)
     result = urlopen(yql_url).read().decode("utf8")
-    print ("Result:")
+    print("Result:")
     print(result)
     data = json.loads(result)
 
     return data
 
-def makeYqlQuery(req):
+
+def make_yql_query(req):
     result = req.get("result")
     parameters = result.get("parameters")
     city = parameters.get("geo-city")
     if city is None:
         return None
 
-    return "select * from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + city + "')"
+    return "select * from weather.forecast where woeid in "\
+           "(select woeid from geo.places(1) where text='" + city + "')"
 
 
-def makeForecastWebhookResult(req):
+def make_forecast_webhook_result(req):
     data = get_forecast(req)
     if data is None:
         return {}
@@ -68,16 +69,17 @@ def makeForecastWebhookResult(req):
         return {}
 
     # print(json.dumps(item, indent=4))
-    tempF = int(condition.get('temp'))
-    print ("Temperature in Farenheit: ")
-    print (tempF)
+    temp_f = int(condition.get('temp'))
+    print("Temperature in Farenheit: ")
+    print(temp_f)
 
-    tempC = int((tempF - 32) * (5.0 / 9.0) + 0.5)
-    print ("Temp in Celsius: ")
-    print (tempC)
+    temp_c = int((temp_f - 32) * (5.0 / 9.0) + 0.5)
+    print("Temp in Celsius: ")
+    print(temp_c)
 
-    speech = "Today in " + location.get('city') + ": " + condition.get('text') + \
-             ", the temperature is " + str(tempC) + " " + "°C"
+    speech = "Today in " + location.get('city') + ": " + \
+             condition.get('text') + \
+             ", the temperature is " + str(temp_c) + " " + "°C"
 
     print("Response:")
     print(speech)
@@ -85,22 +87,23 @@ def makeForecastWebhookResult(req):
     return {
         "speech": speech,
         "displayText": speech,
-        "data": {"facebook": {
-                    "attachment": {
-                        "type": "template",
-                        "payload":{
-                            "template_type":"button",
-                            "text":speech,
-                            "buttons":[
+        "data": {
+            "facebook": {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "button",
+                        "text": speech,
+                        "buttons": [
                             {
-                                "type":"web_url",
-                                "url":link,
-                                "title":"See on Yahoo Weather forecast"
+                                "type": "web_url",
+                                "url": link,
+                                "title": "See on Yahoo Weather forecast"
                             }
-                            ]
-                        }
+                        ]
                     }
-                 }
+                }
+            }
         },
         # "contextOut": [],
         "source": "apiai-weather-webhook-sample",

@@ -54,7 +54,7 @@ To test a feature before deploying it, here's how to do:
 10) Use the Api.ai agent's Callback URL, and "api_token" as verify token
 
 
-### Python 3.x virtualenv creation
+## Python 3.x virtualenv creation
 
 Create a virtual environment with Python 3.5 (or 3.6)
 
@@ -75,3 +75,8 @@ Copy `.env.dist` to `.env` and fill in the variables with real values. Then expo
 Now you can run the webhook with `python app.py`. When you want to exit the virtualenv, just type:
 
     deactivate
+
+
+## Good practices
+
+Following the PEP8 coding conventions is a good practice. Use a linter to help you (eg. *Flake8*), via CLI or as a plugin to your code editor).

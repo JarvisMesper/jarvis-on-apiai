@@ -1,10 +1,9 @@
 from actions.RequestOpenFood import RequestOpenFood
-from actions.RequestOpenFood import ProductBuilder
 
 
-def getOpenFoodInfo(req):
-    print (req)
-    
+def get_open_food_info(req):
+    print(req)
+
     result = req.get("result")
     parameters = result.get("parameters")
     barcode = parameters.get("barcode")
@@ -14,16 +13,16 @@ def getOpenFoodInfo(req):
     if barcode:
         try:
             res = RequestOpenFood.get_product(barcode=barcode)
-            #res = ProductBuilder.clean_data(res)
+            # res = ProductBuilder.clean_data(res)
             data["info"] = res
         except:
             data["info"] = {"source": None}
 
     return data
-    
 
-def makeProductInfoWebhookResult(req):
-    data = getOpenFoodInfo(req)
+
+def make_product_info_webhook_result(req):
+    data = get_open_food_info(req)
     if data is None:
         return {}
 
@@ -33,12 +32,11 @@ def makeProductInfoWebhookResult(req):
     info = data.get("info").get("_source")
 
     if info is None:
-      return {  
-       "speech":"Can't find info about this product",
-       "displayText":"Can't find info about this product",
-       "source":"jarvis-on-apiai"
-    }
-
+        return {
+            "speech": "Can't find info about this product",
+            "displayText": "Can't find info about this product",
+            "source": "jarvis-on-apiai"
+        }
 
     speech = info.get("name_en")
     if speech is None:
@@ -64,35 +62,31 @@ def makeProductInfoWebhookResult(req):
         print("Image URL:")
         print(image_url)
 
-    json_response = {  
-       "speech":speech,
-       "displayText":speech,
-       "data":{  
-          "facebook":{  
-             "attachment":{  
-                "type":"template",
-                "payload":{  
-                   "template_type":"generic",
-                   "elements":[  
-                      {  
-                         "title":speech,
-                         "image_url":image_url,
-                         "subtitle":"Provided by OpenFood.ch"
-                      }
-                   ]
+    json_response = {
+        "speech": speech,
+        "displayText": speech,
+        "data": {
+            "facebook": {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": [
+                            {
+                                "title": speech,
+                                "image_url": image_url,
+                                "subtitle": "Provided by OpenFood.ch"
+                            }
+                        ]
+                    }
                 }
-             }
-          }
-       },
-       "source":"jarvis-on-apiai"
+            }
+        },
+        "source": "jarvis-on-apiai"
     }
-
     if json_response is None:
         print("problem")
-
     return json_response
-
-
 
     '''
 
